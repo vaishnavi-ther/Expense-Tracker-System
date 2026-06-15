@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Expense</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h2>Add New Expense 💰</h2>
+
+    <form method="POST">
+        <input type="text" name="title" placeholder="Expense Title" required>
+        <input type="number" name="amount" placeholder="Amount" required>
+        <input type="text" name="category" placeholder="Category" required>
+        <input type="date" name="date" required>
+
+        <button type="submit">Add Expense</button>
+    </form>
+
+    <p style="text-align:center; margin-top:10px;">
+        <a href="/dashboard">Back to Dashboard</a>
+    </p>
+</div>
+
+</body>
+</html>

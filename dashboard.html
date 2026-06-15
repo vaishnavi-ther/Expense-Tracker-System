@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="navbar">
+        <h2>Expense Dashboard</h2>
+        <div>
+            <a href="/add">Add</a> |
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <p style="color: green; text-align:center;">
+        {{ message }}
+      </p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+    <div class="total-card">
+        <h3>Total Expense</h3>
+        <h2>₹ {{ total }}</h2>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+
+            {% for exp in expenses %}
+            <tr>
+                <td>{{ exp.title }}</td>
+                <td>₹ {{ exp.amount }}</td>
+                <td>{{ exp.category }}</td>
+                <td>{{ exp.date }}</td>
+                <td>
+                    <a href="/edit/{{ exp.id }}">Edit</a> |
+                    <a href="/delete/{{ exp.id }}" onclick="return confirmDelete()">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <h3 style="margin-top:20px;">Spending Overview</h3>
+    <canvas id="myChart"></canvas>
+
+</div>
+
+<script>
+const ctx = document.getElementById('myChart');
+
+new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: {{ categories.keys()|list }},
+        datasets: [{
+            data: {{ categories.values()|list }},
+            backgroundColor: [
+                '#667eea',
+                '#764ba2',
+                '#f6ad55',
+                '#48bb78',
+                '#ed64a6'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>
